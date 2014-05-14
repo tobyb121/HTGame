@@ -19,3 +19,5 @@
 
 */Temp
 */Library
+*.ini
+*.db

@@ -1,0 +1,94 @@
+fileFormatVersion: 2
+guid: c3f74571e3996824486e99c3cf09e3fe
+TextureImporter:
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spritePixelsToUnits: 350
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings:
+  - buildTarget: iPhone
+    maxTextureSize: 1024
+    textureFormat: -2
+    compressionQuality: 50
+  spriteSheet:
+    sprites:
+    - name: head
+      rect:
+        serializedVersion: 2
+        x: 636
+        y: 13
+        width: 478
+        height: 479
+      alignment: 9
+      pivot: {x: .202407897, y: .284021139}
+    - name: arm
+      rect:
+        serializedVersion: 2
+        x: 580
+        y: 505
+        width: 291
+        height: 316
+      alignment: 9
+      pivot: {x: .248179018, y: .895590842}
+    - name: leftleg
+      rect:
+        serializedVersion: 2
+        x: 349
+        y: 138
+        width: 205
+        height: 295
+      alignment: 9
+      pivot: {x: .373836756, y: .945669711}
+    - name: rightleg
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 142
+        width: 205
+        height: 311
+      alignment: 9
+      pivot: {x: .342295945, y: .929671705}
+    - name: body
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 461
+        width: 446
+        height: 483
+      alignment: 0
+      pivot: {x: .5, y: .5}
+  spritePackingTag: 
+  userData: 
