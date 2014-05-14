@@ -22,3 +22,6 @@
 *.ini
 *.db
 */Standard*
+*.csproj
+*.sln
+*/obj
