@@ -24,4 +24,6 @@
 */Standard*
 *.csproj
 *.sln
-*/obj
+*.suo
+obj/
+bin/

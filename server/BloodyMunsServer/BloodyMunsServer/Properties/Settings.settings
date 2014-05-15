@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="BloodyMunsServer.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="TCP_PORT" Type="System.UInt16" Scope="User">
+      <Value Profile="(Default)">5421</Value>
+    </Setting>
+    <Setting Name="UDP_PORT" Type="System.UInt16" Scope="User">
+      <Value Profile="(Default)">5422</Value>
+    </Setting>
+    <Setting Name="BC_PORT" Type="System.UInt16" Scope="User">
+      <Value Profile="(Default)">5433</Value>
+    </Setting>
+    <Setting Name="SERVER_NAME" Type="System.String" Scope="User">
+      <Value Profile="(Default)">BloodyMuns1</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
