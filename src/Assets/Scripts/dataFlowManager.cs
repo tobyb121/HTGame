@@ -4,7 +4,10 @@ using System.Threading;
 using System.Net.Sockets;
 using System.Net;
 using BloodyMuns;
+<<<<<<< HEAD
 using System.IO;
+=======
+>>>>>>> 2c201e1003c53ec22283a3586efa713ce0d31de8
 
 public class dataFlowManager : MonoBehaviour
 {
@@ -38,6 +41,7 @@ public class dataFlowManager : MonoBehaviour
 
 	}
 	
+<<<<<<< HEAD
 	void threadStart ()
 	{
 		byte[] buffer = new byte[1024];
@@ -46,6 +50,21 @@ public class dataFlowManager : MonoBehaviour
 		IPEndPoint bcAddress = captureBcAddress (bcPort);
 		tcp = initialiseTCP (bcAddress);
 		udp = initialiseUDP ();
+=======
+		// Update is called once per frame
+		void Update ()
+		{
+            
+            c.wr
+		}
+
+        public Character c;
+
+		UdpClient sBroadcast;
+		IPAddress tcpHost;
+		ushort tcpPort;
+		public int bcPort = 5433;
+>>>>>>> 2c201e1003c53ec22283a3586efa713ce0d31de8
 
 		int n=0;
 		while (true) {
