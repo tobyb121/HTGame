@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
 
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using System.IO;
+
 namespace BloodyMunsServer
 {
     class Client
@@ -13,6 +17,13 @@ namespace BloodyMunsServer
         private Socket tcpConnection;
 
         private IPAddress remoteIP;
+        public IPAddress RemoteIP
+        {
+            get
+            {
+                return remoteIP;
+            }
+        }
 
         public Client(Socket socket)
         {
@@ -20,6 +31,8 @@ namespace BloodyMunsServer
             remoteIP = ((IPEndPoint) tcpConnection.RemoteEndPoint).Address;
             Console.WriteLine("New Client: " + remoteIP.ToString());
             connected = true;
+
+            character = new Character();
         }
 
         private bool connected;
@@ -30,6 +43,15 @@ namespace BloodyMunsServer
 
         private int p = 5;
         private bool pending = false;
+
+        private Character character;
+        public Character Character
+        {
+            get
+            {
+                return character;
+            }
+        }
 
         public void ping()
         {
@@ -67,7 +89,7 @@ namespace BloodyMunsServer
                     Console.WriteLine("Client Lost");
                     return;
                 }
-                if (bytesRead == 2 && (state.buffer[0] != 0x02) && (state.buffer[1] != 0xFF))
+                if (bytesRead == 2 && (state.buffer[0] == 'a') && (state.buffer[1] == 'b'))
                 {
                     connected = true;
                     pending = false;
@@ -79,6 +101,13 @@ namespace BloodyMunsServer
                     connected = false;
                 }
             }
+        }
+
+        public void update(byte[] data,int length)
+        {
+            MemoryStream memoryStream = new MemoryStream(data);
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Character));
+            Character c = (Character)serializer.ReadObject(memoryStream);
         }
 
         public class StateObject
