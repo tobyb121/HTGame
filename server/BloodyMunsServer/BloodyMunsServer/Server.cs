@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Runtime.Serialization.Json;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
@@ -27,9 +26,7 @@ namespace BloodyMunsServer
         private Socket BCSocket;
 
         private List<Client> clients;
-
-        private DataContractJsonSerializer characterListSerializer = new DataContractJsonSerializer(typeof(List<Character>));
-
+        
         private bool listening;
         public bool Listening
         {
@@ -92,11 +89,6 @@ namespace BloodyMunsServer
                 {
                     Client c = new Client(clientSocket);
                     clients.Add(c);
-                    Character[] characterList = clients.Select(x => x.Character).ToArray();
-
-                    foreach(Client a in clients)
-                    {
-                    }
                 }
             }
         }
@@ -108,7 +100,8 @@ namespace BloodyMunsServer
             bw.Write(TCP_PORT);
             bw.Write(UDP_PORT);
             bw.Write(Properties.Settings.Default.SERVER_NAME);
-            return memStream.ToArray();
+            bcPacket= memStream.ToArray();
+            return bcPacket;
         }
 
         private void broadcastIP(object state)
@@ -146,14 +139,17 @@ namespace BloodyMunsServer
         private void gameUpdate(object state)
         {
             MemoryStream outputStream = new MemoryStream();
-            List<Character> characters = clients.Select(c => c.Character).ToList();
-            characterListSerializer.WriteObject(outputStream,characters);
-            byte[] data=outputStream.ToArray();
+            BinaryWriter bw = new BinaryWriter(outputStream);
+            bw.Write((byte)clients.Count);
+            foreach (Client c in clients)
+            {
+                c.Character.writeCharacter(outputStream);
+            }
             foreach (Client c in clients)
             {
                 
                 SocketAsyncEventArgs evt = new SocketAsyncEventArgs();
-                evt.SetBuffer(data,0,data.Length);
+                evt.SetBuffer(outputStream.GetBuffer(),0,(int)outputStream.Position);
                 evt.RemoteEndPoint = new IPEndPoint(c.RemoteIP, UDP_PORT);
                 udpListener.SendToAsync(evt);
             }

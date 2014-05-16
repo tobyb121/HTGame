@@ -14,6 +14,6 @@ public class characterProperties : MonoBehaviour {
 	void Update () {
 		character.Position = transform.position;
 		character.Rotation = transform.rotation;
-		character.Velocity = rigidbody.velocity;
+		//character.Velocity = rigidbody.velocity;
 	}
 }

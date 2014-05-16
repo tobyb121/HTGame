@@ -82,6 +82,14 @@ namespace BloodyMuns
             }
         }
 
+        public void update(Character source)
+        {
+            characterID = source.characterID;
+            position = source.position;
+            velocity = source.velocity;
+            rotation = source.rotation;
+        }
+
         public static Character readCharacter(MemoryStream mem)
         {
             Character result = new Character();

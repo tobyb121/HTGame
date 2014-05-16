@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Net;
 using BloodyMuns;
 using System.IO;
+using System.Collections.Generic;
 
 
 public class dataFlowManager : MonoBehaviour
@@ -21,6 +22,10 @@ public class dataFlowManager : MonoBehaviour
 	public int bcPort = 5433;
 	public characterProperties characterProperties;
 	public bool connected;
+
+    public GameObject EnemyPrefab;
+    List<Character> Enemies = new List<Character>();
+    Thread udpUpdatesThread;
 
 	// Use this for initialization
 	void Start ()
@@ -39,6 +44,35 @@ public class dataFlowManager : MonoBehaviour
 		}
 
 	}
+
+    void udpUpdatesThreadStart()
+    {
+        byte[] buffer=new byte[4096];
+        while (true)
+        {
+            int bytesRx=udp.Receive(buffer);
+            MemoryStream memStream = new MemoryStream(buffer, 0, bytesRx);
+            BinaryReader reader=new BinaryReader(memStream);
+            int numClients = reader.ReadInt32();
+            for (int i = 0; i < numClients; i++)
+            {
+                Character c = Character.readCharacter(memStream);
+                if (c.ID != characterProperties.character.ID)
+                {
+                    if (Enemies.Exists(x => x.ID == c.ID))
+                    {
+                        Enemies.Find(x => x.ID == c.ID).update(c); ;
+                    }
+                    else
+                    {
+                        GameObject g = (GameObject)GameObject.Instantiate(EnemyPrefab);
+                        g.GetComponent<enemyController>().character = c;
+                        Enemies.Add(c);
+                    }
+                }
+            }
+        }
+    }
 
 	void threadStart ()
 	{
@@ -123,6 +157,8 @@ public class dataFlowManager : MonoBehaviour
 		Socket sUDP = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Udp);
 		sUDP.Bind(new IPEndPoint(IPAddress.Any,udpPort));
 		udpEP = new IPEndPoint (hostIP, udpPort);
+        udpUpdatesThread = new Thread(new ThreadStart(udpUpdatesThreadStart));
+        udpUpdatesThread.Start();
 		return sUDP;
 	}
 
