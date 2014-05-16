@@ -33,6 +33,14 @@ namespace BloodyMunsServer
             connected = true;
 
             character = new Character();
+
+            /*MemoryStream initPacketStream = new MemoryStream();
+            BinaryWriter bw = new BinaryWriter(initPacketStream);
+            bw.Write(0x70);
+            bw.Write(0x10);
+            bw.Write(character.ID);
+
+            tcpConnection.Send();*/
         }
 
         private bool connected;
@@ -62,7 +70,7 @@ namespace BloodyMunsServer
                 return;
             }
             if(tcpConnection.Connected){
-                tcpConnection.Send(new byte[]{0x70,0x71});
+                tcpConnection.Send(new byte[]{0x70,0xFE});
                 StateObject state = new StateObject(tcpConnection);
                 p--;
                 if (!pending)
@@ -83,13 +91,19 @@ namespace BloodyMunsServer
                 {
                     bytesRead = state.socket.EndReceive(result);
                 }
-                catch (ObjectDisposedException e)
+                catch (SocketException e)
                 {
-                    connected=false;
+                    connected = false;
                     Console.WriteLine("Client Lost");
                     return;
                 }
-                if (bytesRead == 2 && (state.buffer[0] == 'a') && (state.buffer[1] == 'b'))
+                catch (ObjectDisposedException e)
+                {
+                    connected = false;
+                    Console.WriteLine("Client Lost");
+                    return;
+                }
+                if (bytesRead == 2 && (state.buffer[0] == 0x02) && (state.buffer[1] == 0xFF))
                 {
                     connected = true;
                     pending = false;

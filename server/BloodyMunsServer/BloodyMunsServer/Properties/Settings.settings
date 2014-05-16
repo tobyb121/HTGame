@@ -2,9 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="BloodyMunsServer.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="TCP_PORT" Type="System.UInt16" Scope="User">
-      <Value Profile="(Default)">5421</Value>
-    </Setting>
     <Setting Name="UDP_PORT" Type="System.UInt16" Scope="User">
       <Value Profile="(Default)">5422</Value>
     </Setting>
@@ -13,6 +10,12 @@
     </Setting>
     <Setting Name="SERVER_NAME" Type="System.String" Scope="User">
       <Value Profile="(Default)">BloodyMuns1</Value>
+    </Setting>
+    <Setting Name="TCP_PORT" Type="System.UInt16" Scope="User">
+      <Value Profile="(Default)">5411</Value>
+    </Setting>
+    <Setting Name="UpdateTime" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">40</Value>
     </Setting>
   </Settings>
 </SettingsFile>

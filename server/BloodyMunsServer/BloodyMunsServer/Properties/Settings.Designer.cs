@@ -25,18 +25,6 @@ namespace BloodyMunsServer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5421")]
-        public ushort TCP_PORT {
-            get {
-                return ((ushort)(this["TCP_PORT"]));
-            }
-            set {
-                this["TCP_PORT"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("5422")]
         public ushort UDP_PORT {
             get {
@@ -68,6 +56,30 @@ namespace BloodyMunsServer.Properties {
             }
             set {
                 this["SERVER_NAME"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5411")]
+        public ushort TCP_PORT {
+            get {
+                return ((ushort)(this["TCP_PORT"]));
+            }
+            set {
+                this["TCP_PORT"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("40")]
+        public int UpdateTime {
+            get {
+                return ((int)(this["UpdateTime"]));
+            }
+            set {
+                this["UpdateTime"] = value;
             }
         }
     }

@@ -11,8 +11,19 @@ namespace BloodyMunsServer
     [DataContract]
     class Character
     {
+        public static int getID()
+        {
+            return _id++;
+        }
+        private static int _id = 0;
+
+        public Character()
+        {
+            id = getID();
+        }
+
         [DataMember]
-        private int id=1;
+        private int id;
         public int ID
         {
             get
@@ -22,7 +33,7 @@ namespace BloodyMunsServer
         }
 
         [DataMember]
-        private int characterID=2;
+        private int characterID;
         public int CharacterID
         {
             get
@@ -32,7 +43,7 @@ namespace BloodyMunsServer
         }
 
         [DataMember]
-        private Vector3 position=new Vector3(4,5,6);
+        private Vector3 position;
         public Vector3 Position
         {
             get
@@ -42,7 +53,17 @@ namespace BloodyMunsServer
         }
 
         [DataMember]
-        private Quaternion rotation=new Quaternion(7,8,9,10);
+        private Vector3 velocity;
+        public Vector3 Velocity
+        {
+            get
+            {
+                return velocity;
+            }
+        }
+
+        [DataMember]
+        private Quaternion rotation;
         public Quaternion Rotation
         {
             get

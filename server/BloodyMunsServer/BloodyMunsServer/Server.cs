@@ -57,6 +57,7 @@ namespace BloodyMunsServer
             tcpListener.Listen(50);
             listening = true;
 
+            
             udpListener = new Socket(SocketType.Dgram, ProtocolType.Udp);
             IPEndPoint udpEP = new IPEndPoint(IPAddress.Any, UDP_PORT);
             udpListener.Bind(udpEP);
@@ -68,7 +69,7 @@ namespace BloodyMunsServer
             heartbeatThread.Change(1000, 1000);
 
             gameUpdateThread = new Timer(new TimerCallback(gameUpdate));
-            gameUpdateThread.Change(0, 50);
+            //gameUpdateThread.Change(0, Properties.Settings.Default.UpdateTime);
 
             Console.WriteLine("Starting Listening on:" + ((IPEndPoint)tcpListener.LocalEndPoint).Address.ToString() + ":" + listenEP.Port.ToString());
 
@@ -89,6 +90,11 @@ namespace BloodyMunsServer
                 {
                     Client c = new Client(clientSocket);
                     clients.Add(c);
+                    Character[] characterList = clients.Select(x => x.Character).ToArray();
+
+                    foreach(Client a in clients)
+                    {
+                    }
                 }
             }
         }
