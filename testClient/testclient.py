@@ -1,10 +1,21 @@
 import socket
 
-HOST= '192.168.0.21'
-PORT= 5411
+bcPORT= 5433
+
+
+sBroadcast = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sBroadcast.bind(('0.0.0.0',bcPORT))
+string,HOST=sBroadcast.recvfrom(64)
+
+print(HOST)
+
+
+
+
+
 
 s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-s.connect((HOST,PORT))
+s.connect((HOST,bcPORT))
 
 while True:
 	s.recv(4)

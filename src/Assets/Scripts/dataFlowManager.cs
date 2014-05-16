@@ -17,18 +17,43 @@ public class dataFlowManager : MonoBehaviour {
 	
 	}
 
-	Socket s;
-	IPAddress HOST= new IPAddress( new byte[] {192,168,0,21});
-	int PORT=5411;
+
+	UdpClient sBroadcast;
+	IPAddress tcpHost;
+	ushort tcpPort;
+	public int bcPort=5433;
+
 	void threadStart () {
 		byte[] buffer = new byte[64];
-		s = new Socket (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-		s.Connect (HOST, PORT);
-
 		byte[] sendBuffer = new byte[] {0x02,0xFF};
-		while (true) {
-			int received = s.Receive(buffer);
-			s.Send (sendBuffer);
-		}
+
+		IPEndPoint bcAddress = captureBcAddress (bcPort);
+		Socket s = initialiseTCP (bcAddress);
+		int received = s.Receive(buffer);
+		s.Send (sendBuffer);
 	}
+
+
+	IPEndPoint captureBcAddress(int bcPort) {
+		sBroadcast = new UdpClient(bcPort);
+		
+		IPEndPoint capture = new IPEndPoint (IPAddress.Any, 0);
+		EndPoint captureRemote = (EndPoint)capture;
+		
+		byte[] bcByte = sBroadcast.Receive (ref capture);
+		
+		tcpHost = capture.Address;
+		
+		tcpPort |= bcByte [0];
+		tcpPort |= (ushort)(((ushort)bcByte [1]) << 8);
+
+		return new IPEndPoint (tcpHost,tcpPort);
+	}
+
+	Socket initialiseTCP(IPEndPoint bcAddress) {
+		Socket s = new Socket (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+		s.Connect(bcAddress);
+		return s;
+	}
+	
 }
