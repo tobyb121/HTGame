@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace BloodyMunsServer
+namespace BloodyMuns
 {
     public struct Vector3
     {
@@ -16,6 +15,15 @@ namespace BloodyMunsServer
             this.x = x;
             this.y = y;
             this.z = z;
+        }
+
+        public static implicit operator UnityEngine.Vector3(Vector3 v)
+        {
+            return new UnityEngine.Vector3(v.x, v.y, v.z);
+        }
+        public static implicit operator Vector3(UnityEngine.Vector3 v)
+        {
+            return new Vector3(v.x, v.y, v.z);
         }
     }
 
@@ -31,6 +39,14 @@ namespace BloodyMunsServer
             this.y = y;
             this.z = z;
             this.w = w;
+        }
+
+        public static implicit operator UnityEngine.Quaternion(Quaternion q){
+            return new UnityEngine.Quaternion(q.x,q.y,q.z,q.w);
+        }
+        public static implicit operator Quaternion(UnityEngine.Quaternion q)
+        {
+            return new Quaternion(q.x, q.y, q.z, q.w);
         }
     }
 }

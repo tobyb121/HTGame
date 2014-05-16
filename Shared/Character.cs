@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 using System.Runtime.Serialization;
 using System.IO;
 
-namespace BloodyMunsServer
+namespace BloodyMuns
 {
-    class Character
+    public class Character
     {
         public static int getID()
         {

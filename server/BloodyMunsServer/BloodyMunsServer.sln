@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodyMunsServer", "BloodyMunsServer\BloodyMunsServer.csproj", "{EFEA7E96-659D-4E7B-BD0C-BAA8E4E2F24D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "..\..\Shared\Shared.csproj", "{3817D72F-2212-46F3-BA5F-5F60C80E2CB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{EFEA7E96-659D-4E7B-BD0C-BAA8E4E2F24D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFEA7E96-659D-4E7B-BD0C-BAA8E4E2F24D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFEA7E96-659D-4E7B-BD0C-BAA8E4E2F24D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3817D72F-2212-46F3-BA5F-5F60C80E2CB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3817D72F-2212-46F3-BA5F-5F60C80E2CB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3817D72F-2212-46F3-BA5F-5F60C80E2CB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3817D72F-2212-46F3-BA5F-5F60C80E2CB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
