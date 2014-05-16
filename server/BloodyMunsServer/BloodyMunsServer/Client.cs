@@ -47,13 +47,13 @@ namespace BloodyMunsServer
 
             MemoryStream initPacketStream = new MemoryStream();
             BinaryWriter bw = new BinaryWriter(initPacketStream);
-            bw.Write(0x70);
-            bw.Write(0x10);
+            bw.Write((byte)0x70);
+            bw.Write((byte)0x10);
             bw.Write(character.ID);
 
             tcpConnection.Send(initPacketStream.ToArray());
             StateObject state = new StateObject(tcpConnection);
-            tcpConnection.BeginReceive(state.buffer, 0, StateObject.BufferSize, SocketFlags.None, new AsyncCallback(onPingRx), state);
+            tcpConnection.BeginReceive(state.buffer, 0, StateObject.BufferSize, SocketFlags.None, new AsyncCallback(onDataRx), state);
         }
 
         private bool connected;
@@ -87,7 +87,7 @@ namespace BloodyMunsServer
             }
         }
 
-        private void onPingRx(IAsyncResult result)
+        private void onDataRx(IAsyncResult result)
         {
             if (result.IsCompleted)
             {
@@ -100,18 +100,18 @@ namespace BloodyMunsServer
                 catch (SocketException)
                 {
                     connected = false;
-                    Console.WriteLine("Client Lost");
+                    Console.WriteLine("Client Lost: "+name);
                     return;
                 }
                 catch (ObjectDisposedException)
                 {
                     connected = false;
-                    Console.WriteLine("Client Lost");
+                    Console.WriteLine("Client Lost: "+name);
                     return;
                 }
                 switch (state.buffer[1])
                 {
-                    case 0xFE:
+                    case 0xFF:
                         connected = true;
                         p = 5;
                         break;
@@ -120,21 +120,22 @@ namespace BloodyMunsServer
                         handleClientUpdate(memStream);
                         break;
                 }
-              
-                tcpConnection.BeginReceive(state.buffer, 0, StateObject.BufferSize, SocketFlags.None, new AsyncCallback(onPingRx),  new StateObject(tcpConnection));
+                StateObject o=new StateObject(tcpConnection);
+                tcpConnection.BeginReceive(o.buffer, 0, StateObject.BufferSize, SocketFlags.None, new AsyncCallback(onDataRx),  o);
             }
         }
 
-        public void update(byte[] data,int length)
+        public void onClientUpdate(byte[] data,int length)
         {
             MemoryStream memoryStream = new MemoryStream(data);
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Character));
-            Character c = (Character)serializer.ReadObject(memoryStream);
+            character = Character.readCharacter(memoryStream);
         }
 
         public void handleClientUpdate(MemoryStream memStream)
         {
-             
+            BinaryReader br = new BinaryReader(memStream);
+            name=br.ReadString();
+            Console.WriteLine("Player has assumed the name: " + name);
         }
 
         public void close()

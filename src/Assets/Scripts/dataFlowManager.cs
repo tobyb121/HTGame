@@ -3,6 +3,7 @@ using System.Collections;
 using System.Threading;
 using System.Net.Sockets;
 using System.Net;
+using BloodyMuns;
 
 public class dataFlowManager : MonoBehaviour
 {
@@ -17,8 +18,11 @@ public class dataFlowManager : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
-	
+            
+            c.wr
 		}
+
+        public Character c;
 
 		UdpClient sBroadcast;
 		IPAddress tcpHost;

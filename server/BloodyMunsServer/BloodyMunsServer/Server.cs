@@ -103,17 +103,12 @@ namespace BloodyMunsServer
 
         private byte[] setupBCPacket()
         {
-            string serverName = Properties.Settings.Default.SERVER_NAME;
-            bcPacket = new byte[5+ASCIIEncoding.ASCII.GetByteCount(serverName)];
-            bcPacket[0] = (byte)TCP_PORT;
-            bcPacket[1] = (byte)(TCP_PORT >> 8);
-            bcPacket[2] = (byte)UDP_PORT;
-            bcPacket[3] = (byte)(UDP_PORT >> 8);
-            bcPacket[4] = (byte)(serverName.Length);
-            byte[] nameBytes = ASCIIEncoding.ASCII.GetBytes(serverName);
-            nameBytes.CopyTo(bcPacket, 5);
-
-            return bcPacket;
+            MemoryStream memStream = new MemoryStream();
+            BinaryWriter bw = new BinaryWriter(memStream);
+            bw.Write(TCP_PORT);
+            bw.Write(UDP_PORT);
+            bw.Write(Properties.Settings.Default.SERVER_NAME);
+            return memStream.ToArray();
         }
 
         private void broadcastIP(object state)
@@ -144,7 +139,7 @@ namespace BloodyMunsServer
                 int packetLength=udpListener.ReceiveFrom(packet,ref ep);
                 Client client=clients.First(c => c.RemoteIP.Equals(((IPEndPoint)ep).Address));
                 if (client!=null)
-                    client.update(packet,packetLength);
+                    client.onClientUpdate(packet,packetLength);
             }
         }
 

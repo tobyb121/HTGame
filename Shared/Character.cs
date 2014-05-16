@@ -24,6 +24,10 @@ namespace BloodyMuns
             {
                 return id;
             }
+            set
+            {
+                id = value;
+            }
         }
 
         private int characterID;
@@ -32,6 +36,10 @@ namespace BloodyMuns
             get
             {
                 return characterID;
+            }
+            set
+            {
+                characterID=value;
             }
         }
 
@@ -42,6 +50,10 @@ namespace BloodyMuns
             {
                 return position;
             }
+            set
+            {
+                position = value;
+            }
         }
 
         private Vector3 velocity;
@@ -50,6 +62,10 @@ namespace BloodyMuns
             get
             {
                 return velocity;
+            }
+            set
+            {
+                velocity = value;
             }
         }
 
@@ -60,9 +76,13 @@ namespace BloodyMuns
             {
                 return rotation;
             }
+            set
+            {
+                rotation = value;
+            }
         }
 
-        private static Character readCharacter(MemoryStream mem)
+        public static Character readCharacter(MemoryStream mem)
         {
             Character result = new Character();
 
@@ -77,7 +97,7 @@ namespace BloodyMuns
             return result;
         }
 
-        private void writeCharacter(MemoryStream mem)
+        public void writeCharacter(MemoryStream mem)
         {
             BinaryWriter writer = new BinaryWriter(mem);
             writer.Write(id);
