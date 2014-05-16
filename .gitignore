@@ -1,28 +1,11 @@
-# Object files
-*.o
-*.ko
-
-# Libraries
-*.lib
-*.a
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.out
-*.app
-
 */Temp
 */Library
 *.ini
 *.db
 */Standard*
-*.csproj
-*.sln
 *.suo
 obj/
-bin/
+*.vshost.exe
+*.vshost.exe.*
+*.pdb
+*.manifest

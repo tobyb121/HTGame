@@ -16,6 +16,15 @@ namespace BloodyMunsServer
     {
         private Socket tcpConnection;
 
+        private string name;
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+        }
+
         private IPAddress remoteIP;
         public IPAddress RemoteIP
         {
@@ -34,13 +43,15 @@ namespace BloodyMunsServer
 
             character = new Character();
 
-            /*MemoryStream initPacketStream = new MemoryStream();
+            MemoryStream initPacketStream = new MemoryStream();
             BinaryWriter bw = new BinaryWriter(initPacketStream);
             bw.Write(0x70);
             bw.Write(0x10);
             bw.Write(character.ID);
 
-            tcpConnection.Send();*/
+            tcpConnection.Send(initPacketStream.ToArray());
+            StateObject state = new StateObject(tcpConnection);
+            tcpConnection.BeginReceive(state.buffer, 0, StateObject.BufferSize, SocketFlags.None, new AsyncCallback(onPingRx), state);
         }
 
         private bool connected;
@@ -50,7 +61,6 @@ namespace BloodyMunsServer
         }
 
         private int p = 5;
-        private bool pending = false;
 
         private Character character;
         public Character Character
@@ -71,13 +81,7 @@ namespace BloodyMunsServer
             }
             if(tcpConnection.Connected){
                 tcpConnection.Send(new byte[]{0x70,0xFE});
-                StateObject state = new StateObject(tcpConnection);
                 p--;
-                if (!pending)
-                {
-                    tcpConnection.BeginReceive(state.buffer, 0, StateObject.BufferSize, SocketFlags.None, new AsyncCallback(onPingRx), state);
-                    pending = true;
-                }
             }
         }
 
@@ -91,29 +95,31 @@ namespace BloodyMunsServer
                 {
                     bytesRead = state.socket.EndReceive(result);
                 }
-                catch (SocketException e)
+                catch (SocketException)
                 {
                     connected = false;
                     Console.WriteLine("Client Lost");
                     return;
                 }
-                catch (ObjectDisposedException e)
+                catch (ObjectDisposedException)
                 {
                     connected = false;
                     Console.WriteLine("Client Lost");
                     return;
                 }
-                if (bytesRead == 2 && (state.buffer[0] == 0x02) && (state.buffer[1] == 0xFF))
+                switch (state.buffer[1])
                 {
-                    connected = true;
-                    pending = false;
-                    p = 5;
+                    case 0xFE:
+                        connected = true;
+                        p = 5;
+                        break;
+                    case 0x20:
+                        MemoryStream memStream = new MemoryStream(state.buffer, 2, bytesRead - 2);
+                        handleClientUpdate(memStream);
+                        break;
                 }
-                else
-                {
-                    Console.WriteLine("Client Error: "+remoteIP.ToString()+" disconnected due to bad ping response");
-                    connected = false;
-                }
+              
+                tcpConnection.BeginReceive(state.buffer, 0, StateObject.BufferSize, SocketFlags.None, new AsyncCallback(onPingRx),  new StateObject(tcpConnection));
             }
         }
 
@@ -124,6 +130,18 @@ namespace BloodyMunsServer
             Character c = (Character)serializer.ReadObject(memoryStream);
         }
 
+        public void handleClientUpdate(MemoryStream memStream)
+        {
+             
+        }
+
+        public void close()
+        {
+            tcpConnection.Shutdown(SocketShutdown.Both);
+            tcpConnection.Close();
+            connected = false;
+        }
+        
         public class StateObject
         {
             public StateObject(Socket socket)
@@ -131,16 +149,8 @@ namespace BloodyMunsServer
                 this.socket = socket;
             }
             public Socket socket = null;
-            public const int BufferSize = 128;
+            public const int BufferSize = 256;
             public byte[] buffer = new byte[BufferSize];
-        }
-
-
-        public void close()
-        {
-            tcpConnection.Shutdown(SocketShutdown.Both);
-            tcpConnection.Close();
-            connected = false;
         }
     }
 }

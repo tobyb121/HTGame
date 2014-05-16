@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace BloodyMunsServer
 {
-    [Serializable]
     public struct Vector3
     {
-        int x;
-        int y;
-        int z;
-        public Vector3(int x, int y, int z)
+        public float x;
+        public float y;
+        public float z;
+        public Vector3(float x, float y, float z)
         {
             this.x = x;
             this.y = y;
@@ -21,14 +19,13 @@ namespace BloodyMunsServer
         }
     }
 
-    [Serializable]
     public struct Quaternion
     {
-        int x;
-        int y;
-        int z;
-        int w;
-        public Quaternion(int x, int y, int z, int w)
+        public float x;
+        public float y;
+        public float z;
+        public float w;
+        public Quaternion(float x, float y, float z, float w)
         {
             this.x = x;
             this.y = y;

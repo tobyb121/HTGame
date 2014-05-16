@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Runtime.Serialization;
+using System.IO;
 
 namespace BloodyMunsServer
 {
-    [DataContract]
     class Character
     {
         public static int getID()
@@ -17,13 +17,8 @@ namespace BloodyMunsServer
         }
         private static int _id = 0;
 
-        public Character()
-        {
-            id = getID();
-        }
 
-        [DataMember]
-        private int id;
+        private int id= getID();
         public int ID
         {
             get
@@ -32,7 +27,6 @@ namespace BloodyMunsServer
             }
         }
 
-        [DataMember]
         private int characterID;
         public int CharacterID
         {
@@ -42,7 +36,6 @@ namespace BloodyMunsServer
             }
         }
 
-        [DataMember]
         private Vector3 position;
         public Vector3 Position
         {
@@ -52,7 +45,6 @@ namespace BloodyMunsServer
             }
         }
 
-        [DataMember]
         private Vector3 velocity;
         public Vector3 Velocity
         {
@@ -62,7 +54,6 @@ namespace BloodyMunsServer
             }
         }
 
-        [DataMember]
         private Quaternion rotation;
         public Quaternion Rotation
         {
@@ -70,6 +61,38 @@ namespace BloodyMunsServer
             {
                 return rotation;
             }
+        }
+
+        private static Character readCharacter(MemoryStream mem)
+        {
+            Character result = new Character();
+
+            BinaryReader reader = new BinaryReader(mem);
+
+            result.id = reader.ReadInt32();
+            result.characterID = reader.ReadInt32();
+            result.position = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+            result.velocity = new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+            result.rotation = new Quaternion(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(),reader.ReadSingle());
+
+            return result;
+        }
+
+        private void writeCharacter(MemoryStream mem)
+        {
+            BinaryWriter writer = new BinaryWriter(mem);
+            writer.Write(id);
+            writer.Write(characterID);
+            writer.Write(position.x);
+            writer.Write(position.y);
+            writer.Write(position.y);
+            writer.Write(velocity.x);
+            writer.Write(velocity.y);
+            writer.Write(velocity.z);
+            writer.Write(rotation.x);
+            writer.Write(rotation.y);
+            writer.Write(rotation.z);
+            writer.Write(rotation.w);
         }
 
     }

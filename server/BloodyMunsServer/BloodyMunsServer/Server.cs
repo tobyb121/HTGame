@@ -85,7 +85,7 @@ namespace BloodyMunsServer
                 {
                     clientSocket = tcpListener.Accept();
                 }
-                catch (ObjectDisposedException e) { break; }
+                catch (ObjectDisposedException) { break; }
                 if (clientSocket != null && clientSocket.Connected)
                 {
                     Client c = new Client(clientSocket);
