@@ -4,17 +4,16 @@ using System.Threading;
 using System.Net.Sockets;
 using System.Net;
 using BloodyMuns;
-<<<<<<< HEAD
 using System.IO;
-=======
->>>>>>> 2c201e1003c53ec22283a3586efa713ce0d31de8
+
 
 public class dataFlowManager : MonoBehaviour
 {
 	UdpClient sBroadcast;
-	IPAddress tcpHost;
+	IPAddress hostIP;
 	ushort tcpPort;
 	ushort udpPort;
+	IPEndPoint udpEP;
 	Socket tcp;
 	Socket udp;
 	string serverName;
@@ -36,12 +35,11 @@ public class dataFlowManager : MonoBehaviour
 		if (connected) {
 			MemoryStream sendStream=new MemoryStream();
 			characterProperties.character.writeCharacter(sendStream);
-			udp.Send(sendStream);
+			udp.SendTo(sendStream.ToArray(),udpEP);
 		}
 
 	}
-	
-<<<<<<< HEAD
+
 	void threadStart ()
 	{
 		byte[] buffer = new byte[1024];
@@ -50,21 +48,6 @@ public class dataFlowManager : MonoBehaviour
 		IPEndPoint bcAddress = captureBcAddress (bcPort);
 		tcp = initialiseTCP (bcAddress);
 		udp = initialiseUDP ();
-=======
-		// Update is called once per frame
-		void Update ()
-		{
-            
-            c.wr
-		}
-
-        public Character c;
-
-		UdpClient sBroadcast;
-		IPAddress tcpHost;
-		ushort tcpPort;
-		public int bcPort = 5433;
->>>>>>> 2c201e1003c53ec22283a3586efa713ce0d31de8
 
 		int n=0;
 		while (true) {
@@ -119,13 +102,13 @@ public class dataFlowManager : MonoBehaviour
 		BinaryReader receivedBinary = new BinaryReader (receivedStream);
 		//byte[] bcByte = sBroadcast.Receive (ref capture);
 
-		tcpHost = capture.Address;
+		hostIP = capture.Address;
 
 		tcpPort = receivedBinary.ReadUInt16 ();
 		udpPort = receivedBinary.ReadUInt16 ();
 		serverName = receivedBinary.ReadString ();
 
-		return new IPEndPoint (tcpHost, tcpPort);
+		return new IPEndPoint (hostIP, tcpPort);
 	}
 
 	Socket initialiseTCP (IPEndPoint bcAddress)
@@ -139,6 +122,7 @@ public class dataFlowManager : MonoBehaviour
 	{
 		Socket sUDP = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Udp);
 		sUDP.Bind(new IPEndPoint(IPAddress.Any,udpPort));
+		udpEP = new IPEndPoint (hostIP, udpPort);
 		return sUDP;
 	}
 
