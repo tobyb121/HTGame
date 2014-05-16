@@ -29,7 +29,6 @@ public class dataFlowManager : MonoBehaviour {
 		while (true) {
 			int received = s.Receive(buffer);
 			s.Send (sendBuffer);
-			print ("Mun");
 		}
 	}
 }
