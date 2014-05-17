@@ -5,9 +5,10 @@ using BloodyMuns;
 public class characterProperties : MonoBehaviour {
 
 	public Character character = new Character();
+    public int CharacterId = 0;
 	// Use this for initialization
 	void Start () {
-	
+        character.ID = CharacterId;
 	}
 	
 	// Update is called once per frame

@@ -6,9 +6,13 @@ public class LookAtCamera : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         mainCamera = Camera.main;
+        renderers = GetComponentsInChildren<SpriteRenderer>();
 	}
 
     private Camera mainCamera;
+
+    public int depth = 0;
+    SpriteRenderer[] renderers;
 
 	// Update is called once per frame
 	void Update () {
@@ -17,5 +21,9 @@ public class LookAtCamera : MonoBehaviour {
         Quaternion q = transform.rotation;
         q.SetLookRotation(cameraDirection);
         transform.rotation = q;
+        foreach (SpriteRenderer s in renderers)
+        {
+            s.sortingOrder = depth * 100 + s.sortingOrder % 100;
+        }
     }
 }

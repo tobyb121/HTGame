@@ -19,14 +19,14 @@ public class dataFlowManager : MonoBehaviour
 	static Socket tcp;
 	static Socket udp;
 	string serverName;
-	string playerName="Mugabe";
+	public string playerName;
 	public int bcPort = 5433;
 	public characterProperties characterProperties;
 	public bool connected;
 
     bool updateQueued = true;
 
-    public GameObject EnemyPrefab;
+    public GameObject[] EnemyPrefab;
     List<enemyController> Enemies = new List<enemyController>();
     static Thread thread;
     static Thread udpUpdatesThread;
@@ -54,7 +54,7 @@ public class dataFlowManager : MonoBehaviour
 		}
         foreach (enemyController enemy in Enemies.FindAll(e=>e.enemy==null))
         {
-            GameObject g = (GameObject)GameObject.Instantiate(EnemyPrefab);
+            GameObject g = (GameObject)GameObject.Instantiate(EnemyPrefab[enemy.character.CharacterID]);
             g.GetComponent<EnemyMovementController>().controller = enemy;
             enemy.enemy = g;
         }
