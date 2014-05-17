@@ -25,7 +25,7 @@ public class dataFlowManager : MonoBehaviour
 	public bool connected;
 
     public GameObject EnemyPrefab;
-    List<Character> Enemies = new List<Character>();
+    List<enemyController> Enemies = new List<enemyController>();
     Thread thread;
     Thread udpUpdatesThread;
 
@@ -45,6 +45,11 @@ public class dataFlowManager : MonoBehaviour
 			characterProperties.character.writeCharacter(sendStream);
 			udp.SendTo(sendStream.ToArray(),udpEP);
 		}
+        foreach (enemyController enemy in Enemies.FindAll(e=>e.enemy==null))
+        {
+            GameObject g = (GameObject)GameObject.Instantiate(EnemyPrefab);
+            enemy.enemy = g;
+        }
 	}
 
     void udpUpdatesThreadStart()
@@ -61,15 +66,13 @@ public class dataFlowManager : MonoBehaviour
                 Character c = Character.readCharacter(memStream);
                 if (c.ID != characterProperties.character.ID)
                 {
-                    if (Enemies.Exists(x => x.ID == c.ID))
+                    if (Enemies.Exists(x => x.character.ID == c.ID))
                     {
-                        Enemies.Find(x => x.ID == c.ID).update(c); ;
+                        Enemies.Find(x => x.character.ID == c.ID).updateCharacter(c); ;
                     }
                     else
                     {
-                        GameObject g = (GameObject)GameObject.Instantiate(EnemyPrefab);
-                        g.GetComponent<enemyController>().character = c;
-                        Enemies.Add(c);
+                        Enemies.Add(new enemyController(c));
                     }
                 }
             }
