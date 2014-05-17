@@ -125,10 +125,9 @@ namespace BloodyMunsServer
             }
         }
 
-        public void onClientUpdate(byte[] data,int length)
+        public void onClientUpdate(Character c)
         {
-            MemoryStream memoryStream = new MemoryStream(data);
-            character = Character.readCharacter(memoryStream);
+            character = c;
         }
 
         public void handleClientUpdate(MemoryStream memStream)

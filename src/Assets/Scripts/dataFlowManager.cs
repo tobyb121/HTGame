@@ -24,6 +24,8 @@ public class dataFlowManager : MonoBehaviour
 	public characterProperties characterProperties;
 	public bool connected;
 
+    bool updateQueued = true;
+
     public GameObject EnemyPrefab;
     List<enemyController> Enemies = new List<enemyController>();
     Thread thread;
@@ -40,10 +42,11 @@ public class dataFlowManager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if (connected) {
+		if (connected&&updateQueued) {
 			MemoryStream sendStream=new MemoryStream();
 			characterProperties.character.writeCharacter(sendStream);
 			udp.SendTo(sendStream.ToArray(),udpEP);
+            updateQueued = false;
 		}
         foreach (enemyController enemy in Enemies.FindAll(e=>e.enemy==null))
         {
@@ -71,7 +74,7 @@ public class dataFlowManager : MonoBehaviour
                     {
                         if (Enemies.Exists(x => x.character.ID == c.ID))
                         {
-                            Enemies.Find(x => x.character.ID == c.ID).updateCharacter(c); ;
+                            Enemies.Find(x => x.character.ID == c.ID).updateCharacter(c);
                         }
                         else
                         {
@@ -79,6 +82,7 @@ public class dataFlowManager : MonoBehaviour
                         }
                     }
                 }
+                updateQueued = true;
             }
             catch (System.Exception e)
             {
@@ -100,9 +104,8 @@ public class dataFlowManager : MonoBehaviour
 
 		int n=0;
 		while (true) {
-			print ("hello");
 			int received = tcp.Receive (buffer);
-			print(n++);
+			//print(n++);
 
 			switch (buffer [1]) {
 			case 0xFE:

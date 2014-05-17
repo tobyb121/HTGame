@@ -77,6 +77,7 @@ namespace BloodyMunsServer
             BCThread.Change(500, 2500);
 
             clientUpdateThread = new Thread(new ThreadStart(clientUpdates));
+            clientUpdateThread.Start();
 
             while (listening)
             {
@@ -127,14 +128,18 @@ namespace BloodyMunsServer
 
         private void clientUpdates()
         {
+            byte[] packet = new byte[256];
             while (listening)
             {
-                byte[] packet=new byte[256];
                 EndPoint ep=new IPEndPoint(IPAddress.Any,0);
                 int packetLength=udpListener.ReceiveFrom(packet,ref ep);
-                Client client=clients.First(c => c.RemoteIP.Equals(((IPEndPoint)ep).Address));
+
+                MemoryStream memoryStream = new MemoryStream(packet,0,packetLength);
+                Character character = Character.readCharacter(memoryStream);
+
+                Client client=clients.First(c => c.Character.ID==character.ID);
                 if (client!=null)
-                    client.onClientUpdate(packet,packetLength);
+                    client.onClientUpdate(character);
             }
         }
 
@@ -148,13 +153,13 @@ namespace BloodyMunsServer
                 c.Character.writeCharacter(outputStream);
             }
             byte[] update = outputStream.ToArray();
-            foreach (Client c in clients)
+            for (int i = 0; i < clients.Count; i++ )
             {
                 SocketAsyncEventArgs evt = new SocketAsyncEventArgs();
-                evt.SetBuffer(update,0,update.Length);
-                evt.RemoteEndPoint = new IPEndPoint(c.RemoteIP, CLIENT_UDP_PORT);
+                evt.SetBuffer(update, 0, update.Length);
+                evt.RemoteEndPoint = new IPEndPoint(clients[i].RemoteIP, CLIENT_UDP_PORT);
                 udpListener.SendToAsync(evt);
-             }
+            }
         }
 
         public void Stop()
