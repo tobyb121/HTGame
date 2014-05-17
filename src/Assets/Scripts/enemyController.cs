@@ -16,10 +16,6 @@ public class enemyController {
         character.Position = c.Position;
         character.Rotation = c.Rotation;
         character.Velocity = c.Velocity;
-        if (enemy != null)
-        {
-            enemy.transform.position = character.Position;
-        }
     }
 
 }

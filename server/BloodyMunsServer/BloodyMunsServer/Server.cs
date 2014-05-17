@@ -147,13 +147,14 @@ namespace BloodyMunsServer
             {
                 c.Character.writeCharacter(outputStream);
             }
+            byte[] update = outputStream.ToArray();
             foreach (Client c in clients)
             {
                 SocketAsyncEventArgs evt = new SocketAsyncEventArgs();
-                evt.SetBuffer(outputStream.GetBuffer(),0,(int)outputStream.Position);
+                evt.SetBuffer(update,0,update.Length);
                 evt.RemoteEndPoint = new IPEndPoint(c.RemoteIP, CLIENT_UDP_PORT);
                 udpListener.SendToAsync(evt);
-            }
+             }
         }
 
         public void Stop()

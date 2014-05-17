@@ -48,6 +48,7 @@ public class dataFlowManager : MonoBehaviour
         foreach (enemyController enemy in Enemies.FindAll(e=>e.enemy==null))
         {
             GameObject g = (GameObject)GameObject.Instantiate(EnemyPrefab);
+            g.GetComponent<EnemyMovementController>().controller = enemy;
             enemy.enemy = g;
         }
 	}
@@ -57,24 +58,31 @@ public class dataFlowManager : MonoBehaviour
         byte[] buffer=new byte[4096];
         while (true)
         {
-            int bytesRx=udp.Receive(buffer);
-            MemoryStream memStream = new MemoryStream(buffer, 0, bytesRx);
-            BinaryReader reader=new BinaryReader(memStream);
-            int numClients = reader.ReadInt32();
-            for (int i = 0; i < numClients; i++)
+            try
             {
-                Character c = Character.readCharacter(memStream);
-                if (c.ID != characterProperties.character.ID)
+                int bytesRx = udp.Receive(buffer);
+                MemoryStream memStream = new MemoryStream(buffer);
+                BinaryReader reader = new BinaryReader(memStream);
+                int numClients = reader.ReadByte();
+                for (int i = 0; i < numClients; i++)
                 {
-                    if (Enemies.Exists(x => x.character.ID == c.ID))
+                    Character c = Character.readCharacter(memStream);
+                    if (c.ID != characterProperties.character.ID)
                     {
-                        Enemies.Find(x => x.character.ID == c.ID).updateCharacter(c); ;
-                    }
-                    else
-                    {
-                        Enemies.Add(new enemyController(c));
+                        if (Enemies.Exists(x => x.character.ID == c.ID))
+                        {
+                            Enemies.Find(x => x.character.ID == c.ID).updateCharacter(c); ;
+                        }
+                        else
+                        {
+                            Enemies.Add(new enemyController(c));
+                        }
                     }
                 }
+            }
+            catch (System.Exception e)
+            {
+                print(e);
             }
         }
     }
