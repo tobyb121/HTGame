@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\EnemyMovementController.cs" />
      <Compile Include="Assets\Scripts\LookAtCamera.cs" />
+     <Compile Include="Assets\Scripts\animation_test.cs" />
      <Compile Include="Assets\Scripts\characterProperties.cs" />
      <Compile Include="Assets\Scripts\dataFlowManager.cs" />
      <Compile Include="Assets\Scripts\enemyController.cs" />

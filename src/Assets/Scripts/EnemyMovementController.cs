@@ -13,5 +13,7 @@ public class EnemyMovementController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         transform.position = controller.character.Position;
+
+		GetComponent<Animator> ().SetFloat ("speed", ((UnityEngine.Vector3)controller.character.Velocity).magnitude);
 	}
 }
