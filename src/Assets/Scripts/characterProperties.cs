@@ -12,8 +12,8 @@ public class characterProperties : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        character.Velocity = (transform.position-character.Position)/Time.deltaTime;
 		character.Position = transform.position;
 		character.Rotation = transform.rotation;
-		//character.Velocity = rigidbody.velocity;
 	}
 }
