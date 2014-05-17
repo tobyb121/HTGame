@@ -50,6 +50,7 @@ public class dataFlowManager : MonoBehaviour
 			MemoryStream sendStream=new MemoryStream();
 			characterProperties.character.writeCharacter(sendStream);
             udp.SendTo(sendStream.ToArray(),udpEP);
+            print(characterProperties.character.CharacterID);
             updateQueued = false;
 		}
         foreach (enemyController enemy in Enemies.FindAll(e=>e.enemy==null))
@@ -63,11 +64,25 @@ public class dataFlowManager : MonoBehaviour
     void udpUpdatesThreadStart()
     {
         byte[] buffer=new byte[4096];
+        int failed = 0;
         while (true)
         {
             try
             {
-                int bytesRx = udp.Receive(buffer);
+                int bytesRx;
+                try
+                {
+                    bytesRx = udp.Receive(buffer);
+                }
+                catch
+                {
+                    print("UDP Receive Error/Timeout");
+                    failed++;
+                    if (failed >= 5)
+                        return;
+                    continue;
+                }
+                failed = 0;
                 MemoryStream memStream = new MemoryStream(buffer);
                 BinaryReader reader = new BinaryReader(memStream);
                 int numClients = reader.ReadByte();
@@ -101,16 +116,40 @@ public class dataFlowManager : MonoBehaviour
 		byte[] heartBeatResponse = new byte[] {0x02,0xFF};
 
 		IPEndPoint bcAddress = captureBcAddress (bcPort);
+        if (bcAddress == null)
+        {
+            return;
+        }
         print("Got bcAddress: " + bcAddress.ToString());
 		tcp = initialiseTCP (bcAddress);
+        if (tcp != null)
+        {
+            print("Error Connecting to TCP");
+            return;
+        }
         print("TCP initialised");
 		udp = initialiseUDP ();
 
 		int n=0;
+        int failed = 0;
 		while (true) {
-			int received = tcp.Receive (buffer);
-			//print(n++);
-
+            int received;
+            try
+            {
+                received = tcp.Receive(buffer);
+            }
+            catch
+            {
+                print("TCP Receive Error/Timeout");
+                failed++;
+                if (!tcp.Connected || failed >= 5)
+                {
+                    tcp.Close();
+                    return;
+                }
+                continue;
+            }
+            failed = 0;
 			switch (buffer [1]) {
 			case 0xFE:
 				tcp.Send (heartBeatResponse);
@@ -140,9 +179,6 @@ public class dataFlowManager : MonoBehaviour
 			case 0x12:
 				//character update
 				break;
-
-
-
 			}
 				
 		}
@@ -155,11 +191,30 @@ public class dataFlowManager : MonoBehaviour
             sBroadcast.Close();
         }
 		sBroadcast = new UdpClient (bcPort);
-
+        sBroadcast.Client.ReceiveTimeout = 5000;
+        
 		IPEndPoint capture = new IPEndPoint (IPAddress.Any, 0);
 		EndPoint captureRemote = (EndPoint)capture;
+        byte[] data=null;
+        int x=0;
+        while(data==null&&x<5){
+            try
+            {
+                data = sBroadcast.Receive(ref capture);
+            }
+            catch {
+                print("BC Receive Timeout: " + x);
+            };
+            x++;
+        }
+        if (data == null)
+        {
+            print("BC Receive Timed Out: No server found");
+            sBroadcast.Close();
+            return null;
+        }
 
-		MemoryStream receivedStream = new MemoryStream (sBroadcast.Receive (ref capture));
+		MemoryStream receivedStream = new MemoryStream ();
 		BinaryReader receivedBinary = new BinaryReader (receivedStream);
 		//byte[] bcByte = sBroadcast.Receive (ref capture);
         print("Received Broadcast Message");
@@ -179,8 +234,16 @@ public class dataFlowManager : MonoBehaviour
         {
             tcp.Shutdown(SocketShutdown.Both);
         }
-		tcp = new Socket (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-		tcp.Connect (bcAddress);
+        try
+        {
+            tcp = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            tcp.Connect(bcAddress);
+            tcp.ReceiveTimeout = 5000;
+        }
+        catch
+        {
+            tcp = null;
+        }
 		return tcp;
 	}
 
@@ -193,6 +256,7 @@ public class dataFlowManager : MonoBehaviour
 		Socket sUDP = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 		sUDP.Bind(new IPEndPoint(IPAddress.Any,clientUdpPort));
         udpEP = new IPEndPoint(hostIP, udpPort);
+        sUDP.ReceiveTimeout = 5000;
         
         udpUpdatesThread = new Thread(new ThreadStart(udpUpdatesThreadStart));
         udpUpdatesThread.Start();
