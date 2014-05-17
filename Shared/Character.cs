@@ -112,7 +112,7 @@ namespace BloodyMuns
             writer.Write(characterID);
             writer.Write(position.x);
             writer.Write(position.y);
-            writer.Write(position.y);
+            writer.Write(position.z);
             writer.Write(velocity.x);
             writer.Write(velocity.y);
             writer.Write(velocity.z);
