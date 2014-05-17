@@ -1,0 +1,153 @@
+fileFormatVersion: 2
+guid: b41398d2069b12c449962425dc2557fb
+TextureImporter:
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: LuBu_0
+      rect:
+        serializedVersion: 2
+        x: 367
+        y: 678
+        width: 189
+        height: 288
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: LuBu_1
+      rect:
+        serializedVersion: 2
+        x: 698
+        y: 844
+        width: 85
+        height: 70
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: LuBu_2
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 759
+        width: 145
+        height: 207
+      alignment: 9
+      pivot: {x: .034619458, y: .935097218}
+    - name: LuBu_3
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 695
+        width: 146
+        height: 271
+      alignment: 9
+      pivot: {x: .958136141, y: .966213346}
+    - name: LuBu_4
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 511
+        width: 107
+        height: 149
+      alignment: 9
+      pivot: {x: .146191463, y: .896188617}
+    - name: LuBu_5
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 513
+        width: 105
+        height: 145
+      alignment: 9
+      pivot: {x: .82999295, y: .867291033}
+    - name: LuBu_6
+      rect:
+        serializedVersion: 2
+        x: 453
+        y: 235
+        width: 189
+        height: 178
+      alignment: 9
+      pivot: {x: .225484043, y: .897473454}
+    - name: LuBu_7
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 124
+        width: 58
+        height: 128
+      alignment: 9
+      pivot: {x: .516264319, y: .867343545}
+    - name: LuBu_8
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 306
+        width: 199
+        height: 179
+      alignment: 9
+      pivot: {x: .111288562, y: .926873207}
+    - name: LuBu_9
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 252
+        width: 164
+        height: 226
+      alignment: 9
+      pivot: {x: .70132184, y: .917405784}
+    - name: LuBu_10
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 36
+        width: 87
+        height: 168
+      alignment: 2
+      pivot: {x: .5, y: 1}
+    - name: LuBu_11
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 26
+        width: 87
+        height: 178
+      alignment: 2
+      pivot: {x: .5, y: 1}
+  spritePackingTag: 
+  userData: 
