@@ -10,14 +10,14 @@ using System.Collections.Generic;
 
 public class dataFlowManager : MonoBehaviour
 {
-	UdpClient sBroadcast;
+	static UdpClient sBroadcast;
 	IPAddress hostIP;
 	ushort tcpPort;
 	ushort udpPort;
     ushort clientUdpPort;
 	IPEndPoint udpEP;
-	Socket tcp;
-	Socket udp;
+	static Socket tcp;
+	static Socket udp;
 	string serverName;
 	string playerName="Mugabe";
 	public int bcPort = 5433;
@@ -28,12 +28,16 @@ public class dataFlowManager : MonoBehaviour
 
     public GameObject EnemyPrefab;
     List<enemyController> Enemies = new List<enemyController>();
-    Thread thread;
-    Thread udpUpdatesThread;
+    static Thread thread;
+    static Thread udpUpdatesThread;
 
 	// Use this for initialization
 	void Start ()
 	{
+        if (thread != null)
+            thread.Abort();
+        if (udpUpdatesThread != null)
+            udpUpdatesThread.Abort();
 		thread = new Thread (new ThreadStart (threadStart));
 		thread.Start ();
         UnityEditor.EditorApplication.playmodeStateChanged+=new UnityEditor.EditorApplication.CallbackFunction(Close);
@@ -146,6 +150,10 @@ public class dataFlowManager : MonoBehaviour
 
 	IPEndPoint captureBcAddress (int bcPort)
 	{
+        if (sBroadcast != null)
+        {
+            sBroadcast.Close();
+        }
 		sBroadcast = new UdpClient (bcPort);
 
 		IPEndPoint capture = new IPEndPoint (IPAddress.Any, 0);
@@ -167,13 +175,21 @@ public class dataFlowManager : MonoBehaviour
 
 	Socket initialiseTCP (IPEndPoint bcAddress)
 	{
-		Socket tcp = new Socket (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        if (tcp != null)
+        {
+            tcp.Shutdown(SocketShutdown.Both);
+        }
+		tcp = new Socket (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 		tcp.Connect (bcAddress);
 		return tcp;
 	}
 
 	Socket initialiseUDP ()
 	{
+        if (udp != null)
+        {
+            udp.Shutdown(SocketShutdown.Both);
+        }
 		Socket sUDP = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 		sUDP.Bind(new IPEndPoint(IPAddress.Any,clientUdpPort));
         udpEP = new IPEndPoint(hostIP, udpPort);

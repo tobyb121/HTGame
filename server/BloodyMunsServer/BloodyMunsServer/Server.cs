@@ -132,7 +132,15 @@ namespace BloodyMunsServer
             while (listening)
             {
                 EndPoint ep=new IPEndPoint(IPAddress.Any,0);
-                int packetLength=udpListener.ReceiveFrom(packet,ref ep);
+                int packetLength;
+                try
+                {
+                    packetLength = udpListener.ReceiveFrom(packet, ref ep);
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
 
                 MemoryStream memoryStream = new MemoryStream(packet,0,packetLength);
                 Character character = Character.readCharacter(memoryStream);
