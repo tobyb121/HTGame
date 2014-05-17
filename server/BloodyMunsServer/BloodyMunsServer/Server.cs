@@ -18,6 +18,7 @@ namespace BloodyMunsServer
         public static ushort BC_PORT =Properties.Settings.Default.BC_PORT;
         public static ushort TCP_PORT=Properties.Settings.Default.TCP_PORT;
         public static ushort UDP_PORT=Properties.Settings.Default.UDP_PORT;
+        public static ushort CLIENT_UDP_PORT = Properties.Settings.Default.CLIENT_UDP_PORT;
 
         private Socket tcpListener;
 
@@ -68,7 +69,7 @@ namespace BloodyMunsServer
             heartbeatThread.Change(1000, 1000);
 
             gameUpdateThread = new Timer(new TimerCallback(gameUpdate));
-            //gameUpdateThread.Change(0, Properties.Settings.Default.UpdateTime);
+            gameUpdateThread.Change(0, Properties.Settings.Default.UpdateTime);
 
             Console.WriteLine("Starting Listening on:" + ((IPEndPoint)tcpListener.LocalEndPoint).Address.ToString() + ":" + listenEP.Port.ToString());
 
@@ -99,6 +100,7 @@ namespace BloodyMunsServer
             BinaryWriter bw = new BinaryWriter(memStream);
             bw.Write(TCP_PORT);
             bw.Write(UDP_PORT);
+            bw.Write(CLIENT_UDP_PORT);
             bw.Write(Properties.Settings.Default.SERVER_NAME);
             bcPacket= memStream.ToArray();
             return bcPacket;
@@ -147,10 +149,9 @@ namespace BloodyMunsServer
             }
             foreach (Client c in clients)
             {
-                
                 SocketAsyncEventArgs evt = new SocketAsyncEventArgs();
                 evt.SetBuffer(outputStream.GetBuffer(),0,(int)outputStream.Position);
-                evt.RemoteEndPoint = new IPEndPoint(c.RemoteIP, UDP_PORT);
+                evt.RemoteEndPoint = new IPEndPoint(c.RemoteIP, CLIENT_UDP_PORT);
                 udpListener.SendToAsync(evt);
             }
         }

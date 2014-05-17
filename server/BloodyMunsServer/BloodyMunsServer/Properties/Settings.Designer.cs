@@ -82,5 +82,17 @@ namespace BloodyMunsServer.Properties {
                 this["UpdateTime"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5444")]
+        public ushort CLIENT_UDP_PORT {
+            get {
+                return ((ushort)(this["CLIENT_UDP_PORT"]));
+            }
+            set {
+                this["CLIENT_UDP_PORT"] = value;
+            }
+        }
     }
 }

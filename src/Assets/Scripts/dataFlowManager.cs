@@ -14,6 +14,7 @@ public class dataFlowManager : MonoBehaviour
 	IPAddress hostIP;
 	ushort tcpPort;
 	ushort udpPort;
+    ushort clientUdpPort;
 	IPEndPoint udpEP;
 	Socket tcp;
 	Socket udp;
@@ -25,13 +26,15 @@ public class dataFlowManager : MonoBehaviour
 
     public GameObject EnemyPrefab;
     List<Character> Enemies = new List<Character>();
+    Thread thread;
     Thread udpUpdatesThread;
 
 	// Use this for initialization
 	void Start ()
 	{
-		Thread thread = new Thread (new ThreadStart (threadStart));
+		thread = new Thread (new ThreadStart (threadStart));
 		thread.Start ();
+        UnityEditor.EditorApplication.playmodeStateChanged+=new UnityEditor.EditorApplication.CallbackFunction(Close);
 	}
 
 	// Update is called once per frame
@@ -42,7 +45,6 @@ public class dataFlowManager : MonoBehaviour
 			characterProperties.character.writeCharacter(sendStream);
 			udp.SendTo(sendStream.ToArray(),udpEP);
 		}
-
 	}
 
     void udpUpdatesThreadStart()
@@ -80,7 +82,9 @@ public class dataFlowManager : MonoBehaviour
 		byte[] heartBeatResponse = new byte[] {0x02,0xFF};
 
 		IPEndPoint bcAddress = captureBcAddress (bcPort);
+        print("Got bcAddress: " + bcAddress.ToString());
 		tcp = initialiseTCP (bcAddress);
+        print("TCP initialised");
 		udp = initialiseUDP ();
 
 		int n=0;
@@ -135,11 +139,12 @@ public class dataFlowManager : MonoBehaviour
 		MemoryStream receivedStream = new MemoryStream (sBroadcast.Receive (ref capture));
 		BinaryReader receivedBinary = new BinaryReader (receivedStream);
 		//byte[] bcByte = sBroadcast.Receive (ref capture);
-
+        print("Received Broadcast Message");
 		hostIP = capture.Address;
 
 		tcpPort = receivedBinary.ReadUInt16 ();
 		udpPort = receivedBinary.ReadUInt16 ();
+        clientUdpPort = receivedBinary.ReadUInt16();
 		serverName = receivedBinary.ReadString ();
 
 		return new IPEndPoint (hostIP, tcpPort);
@@ -155,12 +160,24 @@ public class dataFlowManager : MonoBehaviour
 	Socket initialiseUDP ()
 	{
 		Socket sUDP = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Udp);
-		sUDP.Bind(new IPEndPoint(IPAddress.Any,udpPort));
-		udpEP = new IPEndPoint (hostIP, udpPort);
+		sUDP.Bind(new IPEndPoint(IPAddress.Any,clientUdpPort));
+        udpEP = new IPEndPoint(hostIP, udpPort);
+        
         udpUpdatesThread = new Thread(new ThreadStart(udpUpdatesThreadStart));
         udpUpdatesThread.Start();
 		return sUDP;
 	}
 
+
+    void Close()
+    {
+        if (!UnityEditor.EditorApplication.isPlaying)
+        {
+            if(udpUpdatesThread!=null)
+                udpUpdatesThread.Abort();
+            if(thread!=null)
+                thread.Abort();
+        }
+    }
 }
 

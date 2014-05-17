@@ -15,7 +15,7 @@ print(HOST)
 
 
 s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-s.connect((HOST,bcPORT))
+s.connect((HOST[1],5411))
 
 while True:
 	s.recv(4)

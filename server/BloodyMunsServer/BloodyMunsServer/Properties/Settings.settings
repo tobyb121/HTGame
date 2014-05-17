@@ -17,5 +17,8 @@
     <Setting Name="UpdateTime" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">40</Value>
     </Setting>
+    <Setting Name="CLIENT_UDP_PORT" Type="System.UInt16" Scope="User">
+      <Value Profile="(Default)">5444</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
