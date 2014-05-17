@@ -49,7 +49,7 @@ public class dataFlowManager : MonoBehaviour
 		if (connected&&updateQueued) {
 			MemoryStream sendStream=new MemoryStream();
 			characterProperties.character.writeCharacter(sendStream);
-			udp.SendTo(sendStream.ToArray(),udpEP);
+            udp.SendTo(sendStream.ToArray(),udpEP);
             updateQueued = false;
 		}
         foreach (enemyController enemy in Enemies.FindAll(e=>e.enemy==null))
