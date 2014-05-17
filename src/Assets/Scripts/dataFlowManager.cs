@@ -89,6 +89,7 @@ public class dataFlowManager : MonoBehaviour
 
 		int n=0;
 		while (true) {
+			print ("hello");
 			int received = tcp.Receive (buffer);
 			print(n++);
 
@@ -159,7 +160,7 @@ public class dataFlowManager : MonoBehaviour
 
 	Socket initialiseUDP ()
 	{
-		Socket sUDP = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Udp);
+		Socket sUDP = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 		sUDP.Bind(new IPEndPoint(IPAddress.Any,clientUdpPort));
         udpEP = new IPEndPoint(hostIP, udpPort);
         
