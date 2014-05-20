@@ -119,7 +119,7 @@ public class dataFlowManager : MonoBehaviour
         
         print("Got bcAddress: " + bcAddress.ToString());
 		tcp = initialiseTCP (bcAddress);
-        if (tcp != null)
+        if (tcp == null)
         {
             print("Error Connecting to TCP");
             return;
