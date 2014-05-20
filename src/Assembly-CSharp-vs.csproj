@@ -53,6 +53,8 @@
      <Compile Include="Assets\Scripts\dataFlowManager.cs" />
      <Compile Include="Assets\Scripts\depthSort.cs" />
      <Compile Include="Assets\Scripts\enemyController.cs" />
+     <Compile Include="Assets\bulletMove.cs" />
+     <Compile Include="Assets\fireBullet.cs" />
      <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
  <Reference Include="Assembly-UnityScript-firstpass">
