@@ -17,20 +17,20 @@ public class bulletMove : MonoBehaviour {
 
     void FixedUpdate()
     {
-        Vector3 movementThisStep =rigidbody.position - previousPosition;
-        float movementSqrMagnitude = movementThisStep.sqrMagnitude;
+        //Vector3 movementThisStep =rigidbody.position - previousPosition;
+        //float movementSqrMagnitude = movementThisStep.sqrMagnitude;
 
-        if (movementSqrMagnitude > sqrMinimumExtent)
-        {
-            float movementMagnitude = Mathf.Sqrt(movementSqrMagnitude);
-            RaycastHit hitInfo;
+        //if (movementSqrMagnitude > sqrMinimumExtent)
+        //{
+        //    float movementMagnitude = Mathf.Sqrt(movementSqrMagnitude);
+        //    RaycastHit hitInfo;
 
-            //check for obstructions we might have missed 
-            if (Physics.Raycast(previousPosition, movementThisStep, out hitInfo, movementMagnitude, layerMask.value))
-                myRigidbody.position = hitInfo.point - (movementThisStep / movementMagnitude) * partialExtent;
-        }
+        //    //check for obstructions we might have missed 
+        //    if (Physics.Raycast(previousPosition, movementThisStep, out hitInfo, movementMagnitude, layerMask.value))
+        //        myRigidbody.position = hitInfo.point - (movementThisStep / movementMagnitude) * partialExtent;
+        //}
 
-        previousPosition = myRigidbody.position;
+        //previousPosition = myRigidbody.position;
     }
 
 }
