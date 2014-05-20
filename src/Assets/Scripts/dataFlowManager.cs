@@ -116,10 +116,7 @@ public class dataFlowManager : MonoBehaviour
 		byte[] heartBeatResponse = new byte[] {0x02,0xFF};
 
 		IPEndPoint bcAddress = captureBcAddress (bcPort);
-        if (bcAddress == null)
-        {
-            return;
-        }
+        
         print("Got bcAddress: " + bcAddress.ToString());
 		tcp = initialiseTCP (bcAddress);
         if (tcp != null)
@@ -214,17 +211,16 @@ public class dataFlowManager : MonoBehaviour
             return null;
         }
 
-		MemoryStream receivedStream = new MemoryStream ();
+		MemoryStream receivedStream = new MemoryStream (data);
 		BinaryReader receivedBinary = new BinaryReader (receivedStream);
 		//byte[] bcByte = sBroadcast.Receive (ref capture);
         print("Received Broadcast Message");
 		hostIP = capture.Address;
-
-		tcpPort = receivedBinary.ReadUInt16 ();
-		udpPort = receivedBinary.ReadUInt16 ();
+        tcpPort = receivedBinary.ReadUInt16();
+        udpPort = receivedBinary.ReadUInt16();
         clientUdpPort = receivedBinary.ReadUInt16();
-		serverName = receivedBinary.ReadString ();
-
+        serverName = receivedBinary.ReadString();
+        
 		return new IPEndPoint (hostIP, tcpPort);
 	}
 
