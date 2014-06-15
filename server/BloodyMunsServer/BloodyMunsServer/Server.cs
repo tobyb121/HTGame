@@ -145,7 +145,7 @@ namespace BloodyMunsServer
                 MemoryStream memoryStream = new MemoryStream(packet,0,packetLength);
                 Character character = Character.readCharacter(memoryStream);
 
-                Client client=clients.First(c => c.Character.ID==character.ID);
+                Client client=clients.FirstOrDefault(c => c.Character.ID==character.ID);
                 if (client!=null)
                     client.onClientUpdate(character);
             }

@@ -213,7 +213,7 @@ public class dataFlowManager : MonoBehaviour
 
 		MemoryStream receivedStream = new MemoryStream (data);
 		BinaryReader receivedBinary = new BinaryReader (receivedStream);
-		//byte[] bcByte = sBroadcast.Receive (ref capture);
+		//byte[] bcByte = sBroadcast.Receive (ref chapture);
         print("Received Broadcast Message");
 		hostIP = capture.Address;
         tcpPort = receivedBinary.ReadUInt16();
