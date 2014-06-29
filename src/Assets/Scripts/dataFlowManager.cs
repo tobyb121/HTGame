@@ -50,9 +50,9 @@ public class dataFlowManager : MonoBehaviour
         if (connected && updateQueued)
         {
             MemoryStream sendStream = new MemoryStream();
+            sendStream.WriteByte(0x11);
             characterProperties.character.writeCharacter(sendStream);
             udp.SendTo(sendStream.ToArray(), udpEP);
-            print(characterProperties.character.CharacterID);
             updateQueued = false;
         }
         foreach (enemyController enemy in Enemies.FindAll(e => e.enemy == null))
@@ -166,7 +166,6 @@ public class dataFlowManager : MonoBehaviour
             {
                 case 0xFE:
                     tcp.Send(heartBeatResponse);
-                    print("Ping");
                     break;
 
                 case 0x10:
