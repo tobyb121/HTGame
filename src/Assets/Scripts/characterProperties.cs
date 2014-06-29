@@ -6,9 +6,13 @@ public class characterProperties : MonoBehaviour {
 
 	public Character character = new Character();
     public int CharacterId;
+    public int CharacterHealth;
+    
+    private const int MaxHealth=100;
 	// Use this for initialization
 	void Start () {
         character.CharacterID = CharacterId;
+        CharacterHealth = MaxHealth; 
 	}
 	
 	// Update is called once per frame
@@ -16,5 +20,20 @@ public class characterProperties : MonoBehaviour {
         character.Velocity = (transform.position-character.Position)/Time.deltaTime;
 		character.Position = transform.position;
         character.Rotation = transform.rotation;
+
 	}
+
+    // I made this function for Derrick because he is my friend
+    void BulletHit()
+    {
+        CharacterHealth = CharacterHealth - 10;
+        if (CharacterHealth == 0)
+        {
+            UnityEngine.Vector3 CurrentPosition = transform.position;
+            CurrentPosition.y = 100;
+            transform.position = CurrentPosition;
+
+            CharacterHealth = MaxHealth;
+        }
+    }
 }
