@@ -121,7 +121,11 @@ namespace BloodyMunsServer
                         break;
                 }
                 StateObject o=new StateObject(tcpConnection);
-                tcpConnection.BeginReceive(o.buffer, 0, StateObject.BufferSize, SocketFlags.None, new AsyncCallback(onDataRx),  o);
+                try
+                {
+                    tcpConnection.BeginReceive(o.buffer, 0, StateObject.BufferSize, SocketFlags.None, new AsyncCallback(onDataRx), o);
+                }
+                catch { }
             }
         }
 

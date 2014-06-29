@@ -3,34 +3,30 @@ using System.Collections;
 
 public class bulletMove : MonoBehaviour {
     void Start () {
-        rigidbody.velocity = 200 * transform.forward;
-        previousPosition = rigidbody.position;
+        lineRenderer = GetComponent<LineRenderer>();
 	}
 	
-	// Update is called once per frame
+	
 	void Update () {
+        Vector3 newPosition = previousPosition + velocity * Time.deltaTime;
+
+        lineRenderer.SetPosition(0, previousPosition);
+        lineRenderer.SetPosition(1, newPosition);
+
+        RaycastHit hitInfo=new RaycastHit();
+        if (Physics.Raycast(new Ray(previousPosition, velocity), out hitInfo, (newPosition - previousPosition).magnitude, layerMask))
+        {
+            Destroy(gameObject);
+        }
+
+        previousPosition = newPosition;
 	}
 
-    private Vector3 previousPosition;
+    public Vector3 previousPosition;
+
+    public Vector3 velocity;
 
     public LayerMask layerMask;
 
-    void FixedUpdate()
-    {
-        //Vector3 movementThisStep =rigidbody.position - previousPosition;
-        //float movementSqrMagnitude = movementThisStep.sqrMagnitude;
-
-        //if (movementSqrMagnitude > sqrMinimumExtent)
-        //{
-        //    float movementMagnitude = Mathf.Sqrt(movementSqrMagnitude);
-        //    RaycastHit hitInfo;
-
-        //    //check for obstructions we might have missed 
-        //    if (Physics.Raycast(previousPosition, movementThisStep, out hitInfo, movementMagnitude, layerMask.value))
-        //        myRigidbody.position = hitInfo.point - (movementThisStep / movementMagnitude) * partialExtent;
-        //}
-
-        //previousPosition = myRigidbody.position;
-    }
-
+    private LineRenderer lineRenderer;
 }

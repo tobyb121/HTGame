@@ -17,8 +17,8 @@ public class fireBullet : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
         {
             GameObject bullet = (GameObject)GameObject.Instantiate(bulletPrefab);
-            bullet.transform.rotation = forward.rotation;
-            bullet.transform.position = forward.position;
+            bullet.GetComponent<bulletMove>().previousPosition = forward.position;
+            bullet.GetComponent<bulletMove>().velocity = forward.forward * 20;
         }
 	}
 }
