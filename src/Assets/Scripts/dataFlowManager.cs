@@ -32,9 +32,12 @@ public class dataFlowManager : MonoBehaviour
     static Thread thread;
     static Thread udpUpdatesThread;
 
+    private Queue<bulletQueue> _bulletQueue = new Queue<bulletQueue>();
+
     // Use this for initialization
     void Start()
     {
+        Globals.network = this;
         if (thread != null)
             thread.Abort();
         if (udpUpdatesThread != null)
@@ -47,6 +50,15 @@ public class dataFlowManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        while (_bulletQueue.Count > 0)
+        {
+            bulletQueue b = _bulletQueue.Dequeue();
+            GameObject go = (GameObject)Instantiate(bulletPrefab);
+            bulletMove bullet = go.GetComponent<bulletMove>();
+            bullet.previousPosition = b.pos;
+            bullet.velocity = b.vel;
+        }
+
         if (connected && updateQueued)
         {
             MemoryStream sendStream = new MemoryStream();
@@ -110,10 +122,7 @@ public class dataFlowManager : MonoBehaviour
                         updateQueued = true;
                         break;
                     case 0x02:
-                        GameObject go=(GameObject)Instantiate(bulletPrefab);
-                        bulletMove bullet = go.GetComponent<bulletMove>();
-                        bullet.previousPosition = new UnityEngine.Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-                        bullet.velocity = new UnityEngine.Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                        _bulletQueue.Enqueue(new bulletQueue(new UnityEngine.Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle()),new UnityEngine.Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle())));
                         break;
                 }
             }
@@ -196,7 +205,7 @@ public class dataFlowManager : MonoBehaviour
         }
     }
 
-    void sendMessage(byte[] msg)
+    public void sendMessage(byte[] msg)
     {
         udp.SendTo(msg, udpEP);
     }
@@ -292,5 +301,15 @@ public class dataFlowManager : MonoBehaviour
                 thread.Abort();
         }
     }
+}
+
+class bulletQueue{
+    public bulletQueue(UnityEngine.Vector3 pos, UnityEngine.Vector3 vel)
+    {
+        this.pos = pos;
+        this.vel = vel;
+    }
+    public UnityEngine.Vector3 pos;
+    public UnityEngine.Vector3 vel;
 }
 

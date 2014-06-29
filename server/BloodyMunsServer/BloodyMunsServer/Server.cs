@@ -149,7 +149,7 @@ namespace BloodyMunsServer
                         Character character = Character.readCharacter(memoryStream);
 
                         Client client=clients.FirstOrDefault(c => c.Character.ID==character.ID);
-                        if (client!=null)
+                        if (client != null)
                             client.onClientUpdate(character);
                         break;
                     case 0x12:
@@ -170,7 +170,7 @@ namespace BloodyMunsServer
         {
             MemoryStream outputStream = new MemoryStream();
             BinaryWriter bw = new BinaryWriter(outputStream);
-            bw.Write(0x01);
+            bw.Write((byte)0x01);
             bw.Write((byte)clients.Count);
             foreach (Client c in clients)
             {
