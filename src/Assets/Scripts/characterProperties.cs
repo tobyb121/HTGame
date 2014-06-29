@@ -12,7 +12,8 @@ public class characterProperties : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         character.CharacterID = CharacterId;
-        CharacterHealth = MaxHealth; 
+        CharacterHealth = MaxHealth;
+        Globals.Character = this;
 	}
 	
 	// Update is called once per frame
