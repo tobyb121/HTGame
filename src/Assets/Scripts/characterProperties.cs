@@ -6,9 +6,13 @@ public class characterProperties : MonoBehaviour {
 
 	public Character character = new Character();
     public int CharacterId;
-    public int CharacterHealth;
+    public float CharacterHealth;
+
+    public float recoveryRate = 10;
+
+    public float lastHit = 5;
     
-    private const int MaxHealth=100;
+    public const float MaxHealth=100;
 	// Use this for initialization
 	void Start () {
         character.CharacterID = CharacterId;
@@ -22,11 +26,20 @@ public class characterProperties : MonoBehaviour {
 		character.Position = transform.position;
         character.Rotation = transform.rotation;
 
+        lastHit += Time.deltaTime;
+        if (lastHit>3)
+        {
+            CharacterHealth += recoveryRate * Time.deltaTime;
+            if (CharacterHealth > MaxHealth)
+                CharacterHealth = MaxHealth;
+        }
+
 	}
 
     // I made this function for Derrick because he is my friend
     public void BulletHit()
     {
+        lastHit = 0;
         CharacterHealth = CharacterHealth - 10;
         if (CharacterHealth == 0)
         {
