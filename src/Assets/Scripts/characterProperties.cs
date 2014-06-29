@@ -25,7 +25,7 @@ public class characterProperties : MonoBehaviour {
 	}
 
     // I made this function for Derrick because he is my friend
-    void BulletHit()
+    public void BulletHit()
     {
         CharacterHealth = CharacterHealth - 10;
         if (CharacterHealth == 0)
