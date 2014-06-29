@@ -16,11 +16,18 @@ public class bulletMove : MonoBehaviour {
         RaycastHit hitInfo=new RaycastHit();
         if (Physics.Raycast(new Ray(previousPosition, velocity), out hitInfo, (newPosition - previousPosition).magnitude, layerMask))
         {
+            if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Character"))
+            {
+                GameObject splat = (GameObject)Instantiate(bloodSplat);
+                splat.transform.position = hitInfo.point;
+            }
             Destroy(gameObject);
         }
 
         previousPosition = newPosition;
 	}
+
+    public GameObject bloodSplat;
 
     public Vector3 previousPosition;
 
