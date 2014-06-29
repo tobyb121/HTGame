@@ -15,6 +15,7 @@ public class characterProperties : MonoBehaviour {
     public const float MaxHealth=100;
 	// Use this for initialization
 	void Start () {
+        CharacterId = Globals.selectedCharacter;
         character.CharacterID = CharacterId;
         CharacterHealth = MaxHealth;
         Globals.Character = this;

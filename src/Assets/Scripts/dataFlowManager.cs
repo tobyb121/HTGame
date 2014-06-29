@@ -44,7 +44,9 @@ public class dataFlowManager : MonoBehaviour
             udpUpdatesThread.Abort();
         thread = new Thread(new ThreadStart(threadStart));
         thread.Start();
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.playmodeStateChanged += new UnityEditor.EditorApplication.CallbackFunction(Close);
+#endif
     }
 
     // Update is called once per frame
@@ -293,6 +295,7 @@ public class dataFlowManager : MonoBehaviour
 
     void Close()
     {
+#if UNITY_EDITOR
         if (!UnityEditor.EditorApplication.isPlaying)
         {
             if (udpUpdatesThread != null)
@@ -300,6 +303,7 @@ public class dataFlowManager : MonoBehaviour
             if (thread != null)
                 thread.Abort();
         }
+#endif
     }
 }
 

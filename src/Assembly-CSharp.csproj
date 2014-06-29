@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\MainMenu.cs" />
      <Compile Include="Assets\Scripts\EnemyMovementController.cs" />
      <Compile Include="Assets\Scripts\Globals.cs" />
      <Compile Include="Assets\Scripts\LookAtCamera.cs" />
