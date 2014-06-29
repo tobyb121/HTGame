@@ -20,10 +20,11 @@ public class bulletMove : MonoBehaviour {
             {
                 GameObject splat = (GameObject)Instantiate(bloodSplat);
                 splat.transform.position = hitInfo.point;
+                Destroy(splat, 1.0f);
             }
             if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Me"))
             {
-                
+                Globals.Character.BulletHit();
             }
             Destroy(gameObject);
         }
