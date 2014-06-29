@@ -143,11 +143,26 @@ namespace BloodyMunsServer
                 }
 
                 MemoryStream memoryStream = new MemoryStream(packet,0,packetLength);
-                Character character = Character.readCharacter(memoryStream);
+                int messageType = memoryStream.ReadByte();
+                switch (messageType) { 
+                    case 0x11:
+                        Character character = Character.readCharacter(memoryStream);
 
-                Client client=clients.FirstOrDefault(c => c.Character.ID==character.ID);
-                if (client!=null)
-                    client.onClientUpdate(character);
+                        Client client=clients.FirstOrDefault(c => c.Character.ID==character.ID);
+                        if (client!=null)
+                            client.onClientUpdate(character);
+                        break;
+                    case 0x12:
+                        for (int i = 0; i < clients.Count; i++)
+                        {
+                            packet[0] = 0x02;
+                            SocketAsyncEventArgs evt = new SocketAsyncEventArgs();
+                            evt.SetBuffer(packet, 0, packet.Length);
+                            evt.RemoteEndPoint = new IPEndPoint(clients[i].RemoteIP, CLIENT_UDP_PORT);
+                            udpListener.SendToAsync(evt);
+                        }
+                        break;
+                }
             }
         }
 
@@ -155,6 +170,7 @@ namespace BloodyMunsServer
         {
             MemoryStream outputStream = new MemoryStream();
             BinaryWriter bw = new BinaryWriter(outputStream);
+            bw.Write(0x01);
             bw.Write((byte)clients.Count);
             foreach (Client c in clients)
             {
