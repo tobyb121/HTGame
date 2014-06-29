@@ -6,7 +6,7 @@ public class fireBullet : MonoBehaviour {
 
     public Transform forward;
 
-    public float bulletSpeed = 20f;
+    public float bulletSpeed = 1000f;
 
 	void Start () {
 	

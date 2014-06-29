@@ -4,9 +4,14 @@ using System.Collections;
 public class bulletMove : MonoBehaviour {
     void Start () {
         lineRenderer = GetComponent<LineRenderer>();
+        
+        lineRenderer.SetPosition(0, previousPosition);
+        lineRenderer.SetPosition(1, previousPosition);
+
+        Destroy(gameObject, 5);
+
 	}
-	
-	
+    	
 	void Update () {
         Vector3 newPosition = previousPosition + velocity * Time.deltaTime;
 

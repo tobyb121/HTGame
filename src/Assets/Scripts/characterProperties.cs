@@ -41,7 +41,7 @@ public class characterProperties : MonoBehaviour {
     {
         lastHit = 0;
         CharacterHealth = CharacterHealth - 10;
-        if (CharacterHealth == 0)
+        if (CharacterHealth <= 0)
         {
             UnityEngine.Vector3 CurrentPosition = transform.position;
             CurrentPosition.y = 100;
