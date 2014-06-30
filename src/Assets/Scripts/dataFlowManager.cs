@@ -209,7 +209,8 @@ public class dataFlowManager : MonoBehaviour
 
     public void sendMessage(byte[] msg)
     {
-        udp.SendTo(msg, udpEP);
+        if(connected)
+            udp.SendTo(msg, udpEP);
     }
 
     IPEndPoint captureBcAddress(int bcPort)

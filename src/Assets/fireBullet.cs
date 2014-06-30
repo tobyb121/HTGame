@@ -14,7 +14,7 @@ public class fireBullet : MonoBehaviour {
 
 	
 	void Update () {
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0)&&Globals.Character.bullets>0) {
             MemoryStream ms = new MemoryStream();
             ms.WriteByte(0x12);
             BinaryWriter bw = new BinaryWriter(ms);
@@ -25,6 +25,9 @@ public class fireBullet : MonoBehaviour {
             bw.Write(forward.forward.y * bulletSpeed);
             bw.Write(forward.forward.z * bulletSpeed);
             Globals.network.sendMessage(ms.ToArray());
+            Globals.Character.bullets--;
+            if (Globals.Character.bullets == 0)
+                Globals.Character.reload();
         }
 	}
 }

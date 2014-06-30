@@ -8,6 +8,9 @@ public class characterProperties : MonoBehaviour {
     public int CharacterId;
     public float CharacterHealth;
 
+    public int bullets = 20;
+    public const int maxBullets = 20;
+
     public float recoveryRate = 10;
 
     public float lastHit = 5;
@@ -35,7 +38,26 @@ public class characterProperties : MonoBehaviour {
                 CharacterHealth = MaxHealth;
         }
 
+        if (Input.GetKeyDown(KeyCode.R)&&bullets<maxBullets&&!audio.isPlaying)
+            reload();
+
 	}
+
+    public void reload()
+    {
+        bullets = 0;
+        audio.Play();
+        StartCoroutine(waitForReload());
+    }
+
+    IEnumerator waitForReload()
+    {
+        while (audio.isPlaying)
+        {
+            yield return null;
+        }
+        bullets = maxBullets;
+    }
 
     // I made this function for Derrick because he is my friend
     public void BulletHit()

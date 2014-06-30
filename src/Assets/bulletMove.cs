@@ -3,6 +3,9 @@ using System.Collections;
 
 public class bulletMove : MonoBehaviour {
     void Start () {
+        GameObject sound = (GameObject)Instantiate(fireSound);
+        sound.transform.position = previousPosition;
+
         lineRenderer = GetComponent<LineRenderer>();
         
         lineRenderer.SetPosition(0, previousPosition);
@@ -38,6 +41,8 @@ public class bulletMove : MonoBehaviour {
 	}
 
     public GameObject bloodSplat;
+
+    public GameObject fireSound;
 
     public Vector3 previousPosition;
 
