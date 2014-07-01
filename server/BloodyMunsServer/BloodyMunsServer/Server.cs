@@ -171,8 +171,8 @@ namespace BloodyMunsServer
             MemoryStream outputStream = new MemoryStream();
             BinaryWriter bw = new BinaryWriter(outputStream);
             bw.Write((byte)0x01);
-            bw.Write((byte)clients.Count);
-            foreach (Client c in clients)
+            bw.Write((byte)clients.Where(c=>c.Character.CharacterID!=-1).Count());
+            foreach (Client c in clients.Where(c => c.Character.CharacterID != -1))
             {
                 c.Character.writeCharacter(outputStream);
             }

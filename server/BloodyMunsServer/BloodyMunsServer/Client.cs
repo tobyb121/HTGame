@@ -44,6 +44,7 @@ namespace BloodyMunsServer
             connected = true;
 
             character = new Character();
+            character.CharacterID = -1;
 
             MemoryStream initPacketStream = new MemoryStream();
             BinaryWriter bw = new BinaryWriter(initPacketStream);

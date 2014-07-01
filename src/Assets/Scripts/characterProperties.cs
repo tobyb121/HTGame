@@ -59,6 +59,17 @@ public class characterProperties : MonoBehaviour {
         bullets = maxBullets;
     }
 
+    public void respawn()
+    {
+        UnityEngine.Vector3 CurrentPosition = transform.position;
+        CurrentPosition.y = 100;
+        transform.position = CurrentPosition;
+
+        CharacterHealth = MaxHealth;
+
+        bullets = maxBullets;
+    }
+
     // I made this function for Derrick because he is my friend
     public void BulletHit()
     {
@@ -66,11 +77,7 @@ public class characterProperties : MonoBehaviour {
         CharacterHealth = CharacterHealth - 10;
         if (CharacterHealth <= 0)
         {
-            UnityEngine.Vector3 CurrentPosition = transform.position;
-            CurrentPosition.y = 100;
-            transform.position = CurrentPosition;
-
-            CharacterHealth = MaxHealth;
+            respawn();
         }
     }
 }

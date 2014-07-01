@@ -36,7 +36,7 @@ public class MainMenu : MonoBehaviour {
                     if (Input.GetMouseButtonDown(0))
                     {
                         Globals.selectedCharacter = i;
-                        Application.LoadLevel("Map1");
+                        Application.LoadLevel("Map2");
                     }
                 }
                 else
