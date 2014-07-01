@@ -9,7 +9,7 @@ public class characterProperties : MonoBehaviour {
     public float CharacterHealth;
 
     public int bullets = 20;
-    public const int maxBullets = 20;
+    public const int maxBullets = 30;
 
     public float recoveryRate = 10;
 
@@ -31,7 +31,7 @@ public class characterProperties : MonoBehaviour {
         character.Rotation = transform.rotation;
 
         lastHit += Time.deltaTime;
-        if (lastHit>3)
+        if (lastHit>2.5f)
         {
             CharacterHealth += recoveryRate * Time.deltaTime;
             if (CharacterHealth > MaxHealth)
@@ -74,7 +74,7 @@ public class characterProperties : MonoBehaviour {
     public void BulletHit()
     {
         lastHit = 0;
-        CharacterHealth = CharacterHealth - 10;
+        CharacterHealth = CharacterHealth - 20;
         if (CharacterHealth <= 0)
         {
             respawn();
