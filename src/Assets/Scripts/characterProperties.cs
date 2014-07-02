@@ -18,6 +18,7 @@ public class characterProperties : MonoBehaviour {
     public const float MaxHealth=100;
 	// Use this for initialization
 	void Start () {
+        transform.position = new UnityEngine.Vector3(Random.Range(-45,45),50,Random.Range(-45,45));
         CharacterId = Globals.selectedCharacter;
         character.CharacterID = CharacterId;
         CharacterHealth = MaxHealth;

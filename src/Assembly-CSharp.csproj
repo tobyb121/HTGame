@@ -64,6 +64,7 @@
      <Compile Include="Assets\Scripts\hitIndicator.cs" />
      <Compile Include="Assets\Scripts\playSound.cs" />
      <Compile Include="Assets\Scripts\splash.cs" />
+     <Compile Include="Assets\muteMusic.cs" />
      <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
  <Reference Include="Shared">
